@@ -11,4 +11,51 @@ package modelo;
  */
 public class Bodega {
     
+    private int id;
+    private String nombre;
+    private ArrayList<BodegaDetalle> detalleBodega = new ArrayList<>();
+
+    /**
+     * Contructor de la clase BodegaDetalle
+     * @param id
+     * @param nombre
+     * @param detalleBodega 
+     */
+    public Bodega(int id, String nombre, ArrayList<BodegaDetalle> detalleBodega) {
+        this.id = id;
+        this.nombre = nombre;
+        this.detalleBodega = detalleBodega;
+    }
+
+    
+    /**
+     * Setts and Getts
+     * @return 
+     */
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public ArrayList<BodegaDetalle> getDetalleBodega() {
+        return detalleBodega;
+    }
+
+    public void setDetalleBodega(ArrayList<BodegaDetalle> detalleBodega) {
+        this.detalleBodega = detalleBodega;
+    }
+    
+    
+    
 }

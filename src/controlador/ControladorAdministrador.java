@@ -4,20 +4,22 @@
  * and open the template in the editor.
  */
 package controlador;
-
 import conexion.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import modelo.Administrador;
+import modelo.Sucursal;
 
 
 /**
  *
- * @author GerardoG
+ * @author Jessica
  */
 public class ControladorAdministrador {
+    
+    
     ArrayList<Administrador> adminList = new ArrayList<Administrador>();
     
 
@@ -26,9 +28,10 @@ public class ControladorAdministrador {
     /**
      * Metodo que anade un Administrador a la base de datos
      * @param a
+     * @param sucursal
      * @return boolean
      */
-    public boolean anadirAdministrador(Administrador a){
+    public boolean anadirAdministrador(Administrador a, Sucursal sucursal){
         boolean r = false;
         Connection con = null;
         String sql = "BEGIN "
@@ -47,7 +50,7 @@ public class ControladorAdministrador {
             ps.setString(6, a.getPerDireccion());
             ps.setString(7, a.getPerCorreo());
             //id de la sucursal
-            ps.setInt(8, 1);
+            ps.setInt(8, sucursal.getSucId());
             ps.setString(9, "A");
             ps.setString(10, a.getAdmUsername());
             ps.setString(11, a.getAdmPasword());
@@ -99,6 +102,7 @@ public class ControladorAdministrador {
                                                 cedula, celular, convencional, direccion, correo);
                 if(!"E".equals(tipoT)){
                     adminList.add(adm);
+                    //System.out.println(nombre);
                 }
                 
             }
@@ -169,11 +173,11 @@ public class ControladorAdministrador {
      * @param a
      * @return 
      */
-    public boolean editarAdministrador(Administrador a){
+    public boolean editarAdministrador(Administrador a, Sucursal sucursal){
         boolean r = false;
         Connection con = null;
         String sql = "BEGIN "
-                    +"p_editar_trabajador(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); "
+                    +"p_editar_trabajador(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); "
                     +"END;";
          
         try{
@@ -189,8 +193,9 @@ public class ControladorAdministrador {
             ps.setString(7, a.getPerDireccion());
             ps.setString(8, a.getPerCorreo());
             ps.setInt(9, a.getPerId());
-            ps.setString(10, a.getAdmUsername());
-            ps.setString(11, a.getAdmPasword());
+            ps.setInt(10, sucursal.getSucId());
+            ps.setString(11, a.getAdmUsername());
+            ps.setString(12, a.getAdmPasword());
    
             ps.executeUpdate();
             r=true;
@@ -204,5 +209,42 @@ public class ControladorAdministrador {
         
         return r;
     }
-}
+    
+    /**
+     * Metodo que valida la cedula
+     */
+     public boolean validarCedula(String cedula) {
+        boolean r = false;
+	int suma2=0;
+        int vec[]=new int [10];
+		    
+	for (int j=0;j<cedula.length();j++){
+            vec[j]=Integer.parseInt(cedula.substring(j,j+1));
+	}
+		    
+	boolean num=false;     
+	for (int i=0;i<9;i++){
+            if (num==false){
+                if (vec[i]*2>=10){
+                    suma2=suma2+vec[i]*2-9;
+		}else {
+                    suma2=suma2+vec[i]*2;
+		}
+                num=true;
+            }else{                       
+                suma2=suma2+vec[i]*1;
+		num=false;                 
+            }
+        }
+        int mod=suma2%10;
+        mod=10-mod;
+        if (mod==vec[9]){
+            r = true;
+        }else {
+            r = false;
+	}
+	 return r;
+	}
+    
 
+}

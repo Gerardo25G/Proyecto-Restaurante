@@ -16,7 +16,7 @@ import modelo.TipoMedida;
 
 /**
  *
- * @author Gerardo
+ * @author Gerardo 
  */
 public class EditarProductoFrame extends javax.swing.JFrame {
     ControladorProducto cp = null;
